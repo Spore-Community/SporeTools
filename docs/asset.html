@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: https://spore-web-api.kade.workers.dev; connect-src https://spore-web-api.kade.workers.dev">
+    <title>Spore Tools</title>
+    <link rel='stylesheet' href='style/fonts/codicon.css'>
+    <link rel='stylesheet' href='style/spore.css'>
+    <link rel='stylesheet' href='style/style.css'>
+    <link rel='stylesheet' href='style/asset.css'>
+    <script type="module" src='js/asset.js'></script>
+</head>
+
+<body>
+    <h1>Spore Asset Tools</h1>
+
+    <!-- Asset picker -->
+    <div id="AssetPicker">
+        <!-- Using server ID -->
+        <div>
+            <label>
+                <p>Enter an asset ID for any uploaded creation:</p>
+                <input id="AssetIdInput" type="number" placeholder="501054100093" min="500000002661" max="502000000000" required autofocus>
+            </label>
+            <span id="AssetIdInputError" class="errorText"></span>
+        </div>
+
+        <!-- Using PNG -->
+        <div>
+            <label>
+                <p>Upload a 128x128 PNG:</p>
+                <input id="PngInput" type="file" accept=".png">
+            </label>
+            <span id="PngInputError" class="errorText"></span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="AssetResults">
+
+        <!-- Asset "Sporepedia card" preview -->
+        <div id="AssetCard">
+            <h2 id="AssetName">Unknown asset</h2>
+            <p id="AssetAuthor">Unknown author</p>
+            <canvas id="SmallPng" height="128" width="128"></canvas>
+            <canvas id="LargePng" height="256" width="256"></canvas>
+            <p id="AssetId">Not shared</p>
+            <div id="AssetCardFooter">
+                <a id="CopyAssetId" title="Copy Asset ID" class="codicon codicon-copy"></a>
+                <a id="SpdLink" href="https://www.spore.com/sporepedia" target="_blank" rel="noopener noreferrer" title="View on Spore.com" class="codicon codicon-link-external"></a>
+            </div>
+        </div>
+
+        <!-- Asset details -->
+        <div id="AssetDetails">
+
+            <h2>Asset Details</h2>
+            <nav>
+                <ul>
+                    <li><a href="#ServerAssetInfo">Server Asset Info</a></li>
+                    <li><a href="#ServerCreatureStats">Server Creature Stats</a></li>
+                    <li><a href="#ServerComments">Server Comments</a></li>
+                    <li><a href="#ServerXmlModel">Server XML Model</a></li>
+                    <li><a href="#PngMetadata">PNG Metadata</a></li>
+                    <li><a href="#PngXmlModel">PNG XML Model</a></li>
+                    <li><a href="#PngRaw">PNG Raw Data</a></li>
+                </ul>
+            </nav>
+
+            <hr>
+
+            <!-- Server data -->
+            <div id="ServerAssetInfo">
+                <h3>Server - Asset Info</h3>
+                <pre id="ServerAssetInfoData"></pre>
+            </div>
+
+            <div id="ServerCreatureStats">
+                <h3>Server - Creature Stats</h3>
+                <pre id="ServerCreatureStatsData"></pre>
+            </div>
+
+            <div id="ServerComments">
+                <h3>Server - Comments</h3>
+                <pre id="ServerCommentsData"></pre>
+            </div>
+
+            <div id="ServerXmlModel">
+                <h3>Server - XML Model</h3>
+                <pre id="ServerXmlModelData"></pre>
+            </div>
+
+            <!-- PNG data -->
+            <div id="PngMetadata">
+                <h3>PNG - Pollen Metadata</h3>
+                <pre id="PngMetadataData"></pre>
+            </div>
+
+            <div id="PngXmlModel">
+                <h3>PNG - XML Model</h3>
+                <pre id="PngXmlModelData"></pre>
+            </div>
+
+            <div id="PngRaw">
+                <h3>PNG - Raw Bytes</h3>
+                <pre id="PngRawData"></pre>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="Footer">
+        <p>Not associated with or endorsed by Electronic Arts or Maxis.</p>
+        <p>Created by Kade. Contact via <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/66jVk3X">Discord</a> or <a href="mailto:kade@sporecommunity.com">email</a>. Source code on <a target="_blank" rel="noopener noreferrer" href="https://github.com/Spore-Community/SporeTools">GitHub</a>.</p>
+    </div>
+
+</body>
+
+</html>
