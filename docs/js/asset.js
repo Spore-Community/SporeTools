@@ -31,7 +31,7 @@ function updateAssetCard(name, author, smallPngUrl, largePngUrl, id) {
     document.getElementById("AssetId").innerText = id?.toString() ?? "Not shared";
     // Link to Sporepedia website
     if (id) {
-        document.getElementById("SpdLink").href = "https://www.spore.com/sporepedia#qry=sast-" + id;
+        document.getElementById("SpdLink").href = "https://www.spore.com/sporepedia#qry=ast-" + id + ":sast-" + id;
         document.getElementById("AssetCardFooter").style.display = "initial";
     }
     else {
