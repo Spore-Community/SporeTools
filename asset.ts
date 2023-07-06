@@ -39,7 +39,7 @@ function updateAssetCard(name: string, author: string, smallPngUrl: string | und
 
     // Link to Sporepedia website
     if (id) {
-        (document.getElementById("SpdLink") as HTMLAnchorElement).href = "https://www.spore.com/sporepedia#qry=sast-" + id;
+        (document.getElementById("SpdLink") as HTMLAnchorElement).href = "https://www.spore.com/sporepedia#qry=ast-" + id + ":sast-" + id;
         document.getElementById("AssetCardFooter")!.style.display = "initial";
     } else {
         document.getElementById("AssetCardFooter")!.style.display = "none";
