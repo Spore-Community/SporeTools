@@ -1,12 +1,21 @@
 /** The default base URL to use for the DWR API. */
 const API_URL = "https://spore-web-api.kade.workers.dev/jsserv/";
 
+/**
+ * Options for the Spore DWR API client.
+ */
 interface ApiOptions {
+    /** The base URL of the DWR API. This is normally https://www.spore.com/jsserv/. */
     apiUrl: string,
+    /** The session-specific ID used to authenticate to the DWR API. */
     sessionId: string,
+    /** Unknown value. */
     callCount: string,
+    /** Unknown value. */
     batchId: string,
+    /** Unknown value. */
     c0_id: string,
+    /** The HTTP user agent to use when making requests to the API. */
     userAgent: string
 }
 
