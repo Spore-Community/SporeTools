@@ -169,7 +169,7 @@ function splitResponseToJsStatements(responseBody: string): string[] {
  * 
  * This is not a general purpose JS parser, and only supports a subset of JS that is used by the Spore DWR API.
  */
-function parseJsStatementsToObject(jsStatements: string[]) {
+function parseJsStatementsToObject(jsStatements: string[]): object | string | number | boolean {
     const responseVariables: { [variableName: string]: any } = {};
 
     for (const statement of jsStatements) {
@@ -248,6 +248,10 @@ function parseJsStatementsToObject(jsStatements: string[]) {
             }
         }
     }
+
+    // This should never happen
+    console.error("Could not parse Spore DWR response, no final statement found.");
+    return {};
 }
 
 /**
