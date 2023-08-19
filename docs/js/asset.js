@@ -1,7 +1,13 @@
 import * as SporeApi from "./SporeWebApiClient.js";
 import SporePng from "./SporePngDecoder.js";
-// Load an example asset initially
-updateServerData(501054100093);
+// Load an example asset or query param initially
+if (window.location.search.startsWith("?assetId=")) {
+    const assetId = parseInt(window.location.search.substring(9));
+    updateServerData(assetId);
+}
+else {
+    updateServerData(501054100093);
+}
 // Picking asset using server ID
 const ASSET_ID_INPUT = document.getElementById("AssetIdInput");
 ASSET_ID_INPUT.addEventListener("change", (e) => {
