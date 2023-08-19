@@ -254,6 +254,49 @@ interface BuddyInfo extends SporecastOrBuddyInfo {
     type: "BUDDY"
 }
 
+/** Represents the lineage for a creation. */
+interface AssetAuthors {
+    /** The original creation in lineage (oldest parent). */
+    original: Asset,
+    /** The immediate parent creation in lineage. */
+    parent: Asset
+}
+
+/** Represents an uprate or downrate on an item. This object does not exist for unrated creations. */
+interface Rating {
+    /** The chosen rating. 1 for uprate, 0 for downrate. */
+    rating: number,
+    /** The ID of the creation that was rated. */
+    targetId: number,
+    /** The ID of the user that rated the creation. */
+    userId: number,
+    /** The ID of this rating. This will normally be a 12-digit Spore sever ID. */
+    userRatingId: number
+}
+
+/** Represents a comment on a creation. */
+interface Comment extends SporeItem {
+    /** The asset that was commented on. */
+    asset: Asset,
+    /** The user that posted this comment. */
+    author: User,
+    /** The comment text. */
+    comment: string,
+    id: number,
+    /** The comment text. Duplicate of comment. */
+    name: string,
+    /** Whether the comment has been approved. */
+    status: "APPROVED" | string,
+    /** The date and time that this comment was approved or rejected. */
+    statusUpdated: Date,
+    /** The date and time that this comment was posted. */
+    submitted: Date,
+    /** A nicely formatted date and time to be displayed in the UI. Matches submitted date. Example format: "Wed May 10, 2023" */
+    submittedShortString: string,
+    /** The user that posted this comment. Duplicate of author. */
+    user: User
+}
+
 /** Used by `assetService.listAssets` and `assetService.countAssets` to query creations in the Spore Pollinator database. */
 interface AssetQuery {
     /** Restricts results to a specific user ID. */
@@ -433,9 +476,46 @@ export default class SporeDwrApiClient {
         return await this.execute("assetService", "countAssets", query) as number;
     }
 
+    /** Counts the total number of creations of each type. */
+    async countAvailableAssets() {
+        const all = await this.countAssets({ view: "ALL" });
+        const creatures = await this.countAssets({ view: "ALL", type: "CREATURE" });
+        const buildings = await this.countAssets({ view: "ALL", type: "BUILDING" });
+        const vehicles = await this.countAssets({ view: "ALL", type: "VEHICLE" });
+        const ufos = await this.countAssets({ view: "ALL", type: "UFO" });
+        const adventures = await this.countAssets({ view: "ALL", type: "ADVENTURE" });
+
+        return {
+            all: all,
+            creatures: creatures,
+            buildings: buildings,
+            vehicles: vehicles,
+            ufos: ufos,
+            adventures: adventures
+        };
+    }
+
     /** Returns the total number of creations ever shared on Spore.com. This count includes creations that are not available. */
     async countTotalAssets() {
         return await this.execute("assetService", "countTotalAssets") as number;
+    }
+
+    /** Gets whether a user has uprated or downrated a creation. */
+    async getUserAssetRating(assetId: number, userId: number) {
+        let rating = await this.execute("assetService", "findUserAssetRating", assetId, userId) as Rating | undefined;
+        if (rating) {
+            return rating.rating === 1 ? "UPRATED" : "DOWNRATED";
+        } else return undefined;
+    }
+
+    /** Gets all comments on a creation. */
+    async getComments(assetId: number) {
+        return await this.execute("assetService", "fetchComments", assetId) as Comment[];
+    }
+
+    /** Gets the parent creation and original (oldest) creation in the lineage for the specified creation. */
+    async getAssetLineage(assetId: number) {
+        return await this.execute("assetAuthorshipAdapter", "fetchAssetAuthors", assetId) as AssetAuthors;
     }
 
     /** Gets data for the specified user, using their ID. */
@@ -739,13 +819,33 @@ function substituteVariables(holder: { [index: string]: any } | any[] | { refere
     return holder;
 }
 
-/*const response = await new SporeDwrApiClient().execute("assetService", "listAssets", { index: 0, count: 10000, view: "OLDEST", userId: 500203290213 });
-if (Array.isArray(response)) {
-    response.forEach((asset: any) => {
-        console.log(`[${asset.id}] ${asset.name} by ${asset.author.name}`);
-    });
-    console.log("Found " + response.length + " assets");
-}*/
-
-const response = await new SporeDwrApiClient().listSporecastsSubscribedToByUser(500203290213);
+const sporeServer = new SporeDwrApiClient();
+const response = await sporeServer.execute("assetService", "fetchComments", 501065382447);
 console.log(JSON.stringify(response));
+
+/*// Get all of a user's creations
+let userCreations = await sporeServer.listAssets({ userId: 500203290213 });
+
+let creationsToDownload: Asset[] = [];
+
+userCreations.forEach(async asset => {
+    
+    // Download each creation
+    creationsToDownload.push(asset);
+    
+    // Check if creation has a parent
+    if (asset.parentId) {
+        let parentCreation = await sporeServer.getAsset(asset.parentId);
+        
+        // If parent creation exists, download it
+        if (parentCreation) {
+            creationsToDownload.push(parentCreation);
+        }
+    }
+});
+
+// List all creations to be downloaded
+creationsToDownload.forEach(creation => {
+    console.log(`[${creation.id}] ${creation.name} by ${creation.author.name}`);
+});
+console.log("Found " + creationsToDownload.length + " creations to download");*/
