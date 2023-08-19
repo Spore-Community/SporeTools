@@ -19,6 +19,281 @@ interface ApiOptions {
     userAgent?: string
 }
 
+type AssetType = "CREATURE" | "BUILDING" | "VEHICLE" | "UFO" | "ADVENTURE";
+
+type CreatureFunction = "CREATURE" | "TRIBE_CREATURE" | "CIV_CREATURE" | "SPACE_CREATURE" | "ADVENTURE_CREATURE";
+type BuildingFunction = "CITY_HALL" | "HOUSE" | "INDUSTRY" | "ENTERTAINMENT";
+type VehicleFunction = "MILITARY_LAND" | "MILITARY_WATER" | "MILITARY_AIR" | "ECONOMIC_LAND" | "ECONOMIC_WATER" | "ECONOMIC_AIR" | "CULTURAL_LAND" | "CULTURAL_WATER" | "CULTURAL_AIR" | "COLONY_LAND" | "COLONY_WATER" | "COLONY_AIR";
+type UfoFunction = "UFO";
+type AdventureFunction = "ADV_UNSET" | "ADV_TEMPLATE" | "ADV_ATTACK" | "ADV_DEFEND" | "ADV_SOCIALIZE" | "ADV_EXPLORE" | "ADV_QUEST" | "ADV_STORY" | "ADV_COLLECT" | "ADV_PUZZLE";
+type AssetFunction = CreatureFunction | BuildingFunction | VehicleFunction | UfoFunction | AdventureFunction;
+
+type AssetView = "NEWEST" | "OLDEST" | "TOP_RATED" | "TOP_RATED_NEW" | "TOP_RATED_AUTHOR" | "FEATURED" | "FEATURED_ADMIN" | "MAXIS_MADE" | "CUTE_AND_CREEPY" | "RANDOM" | "THERESA_VISION" | "ALL";
+
+type Locale = "en_US" | string;
+
+type Products = "SPORE_CORE" | "CUTE_AND_CREEPY" | "INSECT_LIMBS" | "EXPANSION_PACK1" | "DR_PEPPER_PARTS";
+
+type AssetStatus = "CLASSIFIED" | "INVALID" | "PURGED" | "DELETED";
+
+/** Represents an item in the Spore Pollinator database. Includes users, assets, Sporecasts. */
+interface SporeItem {
+    /** The ID number of this item. This will normally be a 12-digit Spore server ID. */
+    id: number
+}
+
+/** Represents a Spore user/player/persona. */
+interface User extends SporeItem {
+    /** The number of creations that have been shared by this user. */
+    assetCount: number,
+    /** The relative URL of this user's avatar image. */
+    avatarImage: string,
+    /** True if this user is using a custom avatar image instead of a creation. */
+    avatarImageCustom: boolean
+    /** The date and time that this user registered this Spore persona. */
+    dateCreated: Date,
+    /** Needs to be confirmed: True if this the the default Spore persona/screen name on this EA nucleus account. False if this is an alternate persona/screen name (alt). */
+    default: boolean
+    /** The ID number of this user. This will normally be a 12-digit Spore server ID, unless this user was created prior to the game's launch, in which case it will match the EA nucleus ID. */
+    id: number
+    /** The date and time that this user last logged in. May be undefined if this user has never logged in. */
+    lastLogin: Date | undefined,
+    /** The screen name of this user. */
+    name: string,
+    /** The date and time of this user's most recent creation. May be undefined if this user has never uploaded a creation. */
+    newestAssetCreated: Date | undefined,
+    /** The ID number of this user's EA account (nucleus account). This number will be the same for all personas/screen names (alts) attached to this EA account. */
+    nucleusUserId: number,
+    /** The ID number of this persona/screen name in EA's persona (game-specific ientities) system. */
+    personaId: number,
+    /** The screen name of this user. Duplicate of name. */
+    screenName: string,
+    /** The number of other users who have subscribed to this user. */
+    subscriptionCount: number,
+    /** The tagline of this user. */
+    tagline: string | undefined,
+    /** Needs to be confirmed: The date and time that this user last edited their profile details or shared a creation. */
+    updated: Date,
+    /** The ID number of this user. Duplicate of id. */
+    userId: number
+}
+
+/** Represents a users public data, including their profile data, creations, achievements, buddies, Sporecasts, and adventure data. */
+interface MySporePublicData {
+    /** The three most-recent adventures shared by this user. */
+    adventuresCreated: unknown[],
+    /** An array containing a single adventure where this user is #1 on the leaderboard. */
+    firstPlaceAdventures: unknown[],
+    highestRankedCaptain: unknown | undefined,
+    mostRecentAchievement: unknown | undefined,
+    /** Up to four users (sorted by lowest ID) which this user has subscribed to (added as buddy). */
+    myBuddies: User[],
+    /** The six most-recent creations shared by this user. */
+    myCreations: Asset[],
+    mySporecasts: Sporecast[],
+    /** The user that this data is for. */
+    ownerOfData: User,
+    /** An array containing a single adventure where this user is #2 on the leaderboard. */
+    secondPlaceAdventures: unknown[],
+    /** An array containing a single adventure where this user is #3 on the leaderboard. */
+    thirdPlaceAdventures: unknown[],
+    /** The number of adventures where this user is #3 on the leaderboard. */
+    totalBronzeCups: number,
+    /** The number of buddies that this user has subscribed to, equivalent to myBuddies.length. */
+    totalBuddyCount: number,
+    /** The number of creations that this user has shared, equivalent to myCreations.length. */
+    totalCreationCount: number,
+    /** The number of adventures where this user is #1 on the leaderboard. */
+    totalGoldCups: number,
+    /** The number of adventures where this user is #2 on the leaderboard. */
+    totalSilverCups: number,
+    /** The total number of Sporepoints that this user has earned from completing adventures. */
+    totalSporePoints: number
+}
+
+/** Represents a creation/asset. */
+interface Asset extends SporeItem {
+    adventureStat: unknown | undefined,
+    /** The subtype (function) of this creation. */
+    assetFunction: AssetFunction,
+    /** The ID number of this creation. Duplicate of id. */
+    assetId: number,
+    auditTrail: unknown | undefined,
+    /** The user who made this creation. */
+    author: User,
+    /** The date and time that this creation was created. */
+    created: Date,
+    /** The description of this creation. If the description has been edited on Spore.com, this will reflect the updated description, not the one in the creation's PNG data. */
+    description: string | undefined,
+    /** If this creation has been featured by Maxis, this is the date and time it is scheduled to appear on the features view. Will be undefined if this creation is not scheduled to be featured. */
+    featured: Date | undefined,
+    id: number,
+    imageCount: number,
+    /** The locale that this creation was uploaded from. */
+    localeString: Locale,
+    /** The name of this creation. */
+    name: string,
+    /** The ID of the oldest creation in this creation's linage. If this is an original creation, this will be the ID of this creation. Lineage may be glitchy. */
+    originalId: number,
+    /** The ID of the immediate parent creation in this creation's lineage. If this is an original creation, this will be undefined. Lineage may be glitchy. */
+    parentId: number | undefined,
+    quality: boolean,
+    rating: number,
+    /** The Spore products required to view this creation in-game. */
+    requiredProducts: Products[],
+    /** The IP address from which this creation was uploaded. */
+    sourceIp: string,
+    /** The status of this creation. See name property. Only CLASSIFIED creations are visible on Spore.com. */
+    status: {
+        /** Java inner class data, not relevant. */
+        declaringClass: { name: "com.ea.sp.pollinator.db.Asset$Status" },
+        /** The status of this creation. Only CLASSIFIED creations are visible on Spore.com. */
+        name: AssetStatus,
+        nameKey: string,
+    },
+    /** The tags on this creation. If the tags have been edited on Spore.com, this will reflect the updated tags, not the ones in the creation's PNG data. */
+    tags: string,
+    thumbnailSize: number,
+    /** The general type of this creation. */
+    type: AssetType,
+    /** The date and time that this creation was last updated. */
+    updated: Date
+}
+
+/** This sporecast object is only used in `profileService.getMySporePublicData`. */
+interface Sporecast extends SporeItem {
+    /** The user who created this Sporecast. */
+    author: User,
+    /** The date and time that the creations (entries) in this Sporecast were last updated. */
+    contentUpdated: Date,
+    /** The creations in this Sporecast. May not include all creations. */
+    entries: Asset[],
+    /** The total number of creations in this Sporecast. */
+    entryCount: number,
+    id: number,
+    /** The locale that this Sporecast was created from. */
+    locale: Locale,
+    /** The name of this Sporecast. */
+    name: string,
+    /** The number of users subscribed to this Sporecast. */
+    subscriptionCount: number,
+    /** The tags on this Sporecast. */
+    tags: string[],
+    /** The name of this Sporecast. Duplicate of name. */
+    title: string,
+    type: "aggregator",
+    /** The date and time that the details of this Sporecast were last updated. */
+    updated: Date
+}
+
+/** Represents info about a Sporecast or buddy, as returned by methods in `sporecastService`. */
+interface SporecastOrBuddyInfo extends SporeItem {
+    /** Not always included, and null when it is, purpose unknown. */
+    assetIds: unknown | undefined,
+    /** Not always included, and null when it is, purpose unknown. */
+    assets: unknown | undefined,
+    /** The user who created this Sporecast. */
+    author: User,
+    /** The total number of creations in this Sporecast. */
+    count: number,
+    id: number,
+    /** The locale that this Sporecast was created from. */
+    locale: Locale,
+    sporecastId: {
+        /** The ID of this Sporecast or user. Duplicate of parent object. */
+        id: number,
+        /** Whether this is a Sporecast (theme) or user (buddy). */
+        type: "THEME" | "BUDDY"
+    },
+    /** Whether the current user is subscribed to this Sporecast. False if unauthenticated. */
+    subscribed: boolean,
+    /** The number of users subscribed to this Sporecast. */
+    subscriptionCount: number,
+    /** The name of this Sporecast. */
+    title: string,
+    /** Whether this is a Sporecast (theme) or user (buddy). */
+    type: "THEME" | "BUDDY",
+}
+
+interface SporecastInfo extends SporecastOrBuddyInfo {
+    /** The description of this Sporecast. May be undefined if a description is not set. */
+    description: string,
+    /** The date and time that this Sporecast was last updated. */
+    lastUpdated: Date,
+    rating: number,
+    sporecastId: {
+        /** The ID of this Sporecast. Duplicate of parent object. */
+        id: number,
+        /** Whether this is a Sporecast (theme) or user (buddy). */
+        type: "THEME"
+    },
+    /** The tags on this Sporecast. */
+    tags: string,
+    /** Whether this is a Sporecast (theme) or user (buddy). */
+    type: "THEME"
+}
+
+interface BuddyInfo extends SporecastOrBuddyInfo {
+    /** The user that is buddied. */
+    author: User,
+    /** The total number of creations shared by this buddy. */
+    count: number,
+    sporecastId: {
+        /** The ID of this user. Duplicate of parent object. */
+        id: number,
+        /** Whether this is a Sporecast (theme) or user (buddy). */
+        type: "BUDDY"
+    },
+    /** Whether the current user is subscribed to this user. False if unauthenticated. */
+    subscribed: boolean,
+    /** Always 0. Use `author.subscriptionCount` instead. */
+    subscriptionCount: number,
+    /** The name of this user. */
+    title: string,
+    /** Whether this is a Sporecast (theme) or user (buddy). */
+    type: "BUDDY"
+}
+
+/** Used by `assetService.listAssets` and `assetService.countAssets` to query creations in the Spore Pollinator database. */
+interface AssetQuery {
+    /** Restricts results to a specific user ID. */
+    userId?: number,
+    /** @deprecated Restricts results to a specific user name, however, appears to be ignored. */
+    username?: string,
+    /** The index to begin listing assets from, used to paginate results. */
+    index?: number,
+    /** The maximum number of assets to retrieve. While there is no actual limit, values over 2000 are slow and unreliable. Do not abuse. */
+    count?: number,
+    /** The type of asset to retrieve. */
+    type?: AssetType,
+    /** The subtype (function) of asset to retrieve. */
+    assetFunction?: AssetFunction,
+    /** Excludes assets with this type. */
+    excludeType?: AssetType,
+    /** The view/feed of assets to look in. ALL looks through all assets, but may be slow. Other views may not be able to retrieve all assets. */
+    view?: AssetView,
+    /** Restricts results to a single asset ID. When specified, most other options are ignored, and the results will contain one or zero assets. */
+    assetId?: number,
+    [key: string]: string | number | boolean | undefined
+}
+
+/** Used by `sporecastService.listSporecastInfos`, `countSporecastInfo`, and `listSporecastInfosSubscribedToByUser` to query sporecasts in the Spore Pollinator database. */
+interface SporecastQuery {
+    /** Restricts results to a specific user ID. */
+    userId?: number,
+    /** The index to begin listing sporecasts from, used to paginate results. */
+    index?: number,
+    /** The maximum number of sporecasts to retrieve. */
+    count?: number,
+    /** Whether to include empty sporecasts. */
+    showEmpty?: boolean,
+    /** Always "THEME". */
+    type?: "THEME",
+    /** Restricts results to a specific sporecast ID. When specified, most other options are ignored, and the results will contain one or zero sporecasts. */
+    sporecastId?: number,
+    [key: string]: string | number | boolean | undefined
+}
+
 /**
  * A client for the Spore DWR API. Used to access the official Spore Pollinator database. Used by Spore.com, but not the game. No official documentation.
  * 
@@ -88,7 +363,7 @@ export default class SporeDwrApiClient {
      * 
      * The parameters are passed to the method. They can be strings, numbers, or objects containing strings/numbers.
      */
-    async execute(className: string, methodName: string, ...parameters: (string | number | { [key: string]: string | number })[]) {
+    async execute(className: string, methodName: string, ...parameters: (string | number | boolean | { [key: string]: string | number | boolean | undefined })[]) {
         const path = "call/plaincall/";
         const contentType = "text/plain";
 
@@ -105,7 +380,9 @@ export default class SporeDwrApiClient {
             if (typeof currentParameter === "object") {
                 body += `c0-param${i}=Object_Object:{`;
                 for (const key in currentParameter) {
-                    body += `${key}:${currentParameter[key]}, `;
+                    if (currentParameter[key]) {
+                        body += `${key}:${currentParameter[key]}, `;
+                    }
                 }
                 body = body.slice(0, -2);
                 body += "}\n";
@@ -133,6 +410,63 @@ export default class SporeDwrApiClient {
 
         // Parse the JS statements into a single object
         return parseJsStatementsToObject(responseStatements);
+    }
+
+    /** Queries creations in the database. This can retrieve any creation that is valid/classified (not modded, purged, or deleted). */
+    async listAssets(query: AssetQuery) {
+        return await this.execute("assetService", "listAssets", query) as Asset[];
+    }
+
+    /** Retrieves data for a single creation, using its asset ID. */
+    async getAsset(assetId: number) {
+        let assets = await this.listAssets({ assetId: assetId });
+        return assets[0];
+    }
+
+    /** @deprecated Use listAssets instead. Retrieves up to 2000 assets shared by the specified user. */
+    async listUserAssets(userId: number, view?: AssetView) {
+        return await this.listAssets({ userId: userId, count: 2000, view: view ?? "ALL" });
+    }
+
+    /** Counts the total number of creations that match the specified query. */
+    async countAssets(query: AssetQuery) {
+        return await this.execute("assetService", "countAssets", query) as number;
+    }
+
+    /** Returns the total number of creations ever shared on Spore.com. This count includes creations that are not available. */
+    async countTotalAssets() {
+        return await this.execute("assetService", "countTotalAssets") as number;
+    }
+
+    /** Gets data for the specified user, using their ID. */
+    async getUser(userId: number) {
+        return await this.execute("profileService", "getMySporePublicData", userId) as User;
+    }
+
+    /** Queries Sporecasts in the database. Does not include assets in the Sporecast. */
+    async listSporecasts(query: SporecastQuery) {
+        return await this.execute("sporecastService", "listSporecastInfos", query) as SporecastInfo[];
+    }
+
+    /** Retrieves data for a single Sporecast, using its ID. */
+    async getSporecast(sporecastId: number) {
+        let sporecasts = await this.listSporecasts({ sporecastId: sporecastId });
+        return sporecasts[0];
+    }
+
+    /** Counts the total number of Sporecasts that match the specified query. */
+    async countSporecasts(query: SporecastQuery) {
+        return await this.execute("sporecastService", "countSporecastInfo", query) as number;
+    }
+
+    /** Gets the Sporecasts and buddies that the specified user is subscribed to. */
+    async listSporecastsSubscribedToByUser(userId: number) {
+        return await this.execute("sporecastService", "listSporecastInfosSubscribedToByUser", userId) as SporecastOrBuddyInfo[];
+    }
+
+    /** Gets the assets in the specified Sporecast. */
+    async getSporecastAssets(sporecastId: number, count?: number, index?: number) {
+        return await this.execute("sporecastService", "findSporecastAssets", sporecastId, index ?? 0, count ?? 2000) as Asset[];
     }
 
 }
@@ -405,15 +739,13 @@ function substituteVariables(holder: { [index: string]: any } | any[] | { refere
     return holder;
 }
 
-// CLI testing
-/*if (Deno.args.length === 2) {
-    const response = await new SporeDwrApiClient().execute(Deno.args[0], Deno.args[1]);
-    console.log(response);
-} else {
-    // Sample request
-    const response = await new SporeDwrApiClient().execute("assetService", "listAssets", { userId: 500203290213, assetId: 501105456207, index: 0, count: 20, view: "OLDEST" });
-    console.log(response);
+/*const response = await new SporeDwrApiClient().execute("assetService", "listAssets", { index: 0, count: 10000, view: "OLDEST", userId: 500203290213 });
+if (Array.isArray(response)) {
+    response.forEach((asset: any) => {
+        console.log(`[${asset.id}] ${asset.name} by ${asset.author.name}`);
+    });
+    console.log("Found " + response.length + " assets");
 }*/
 
-//new SporeDwrApiClient().execute("profileService", "getMySporePublicData", "500203290213");
-//new SporeDwrApiClient().execute("assetService", "listAssets", { userId: 500203290213, assetId: 501105456207, index: 0, count: 20, view: "OLDEST" });
+const response = await new SporeDwrApiClient().listSporecastsSubscribedToByUser(500203290213);
+console.log(JSON.stringify(response));
