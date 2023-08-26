@@ -1,5 +1,6 @@
 import * as SporeApi from "./SporeWebApiClient.js";
 import SporePng from "./SporePngDecoder.js";
+import { getParentAssets } from "./SporeAssetFinder.js";
 
 // Load an example asset or query param initially
 if(window.location.search.startsWith("?assetId=")){
@@ -100,6 +101,13 @@ async function updateServerData(assetId: number | undefined, analyzePng = true) 
         document.getElementById("ServerCreatureStatsData")!.innerText = creatureStats.replaceAll("><", ">\n<");
         document.getElementById("ServerCommentsData")!.innerText = comments.replaceAll("><", ">\n<");
         document.getElementById("ServerXmlModelData")!.innerText = xmlModel;
+
+        // Lineage PNGs
+        const parentIds = await getParentAssets(assetId);
+        parentIds.reverse().forEach(parentId => {
+            const pngUrl = SporeApi.getSmallPngUrl(parentId);
+            document.getElementById("ServerLineageData")!.innerHTML += `<a href="?assetId=${parentId}"><div class="lineageAsset"><img src="${pngUrl}" width="128" height="128"><pre>${parentId}</pre></div></a>`;
+        });
 
         // Decode PNG data
         if (analyzePng) {

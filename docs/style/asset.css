@@ -92,3 +92,10 @@
 #AssetDetails div:target {
     display: block;
 }
+
+.lineageAsset {
+    margin: 8px;
+    border: 4px solid var(--spore-light-space);
+    border-radius: 16px;
+    background: var(--spore-cool-gradient);
+}
