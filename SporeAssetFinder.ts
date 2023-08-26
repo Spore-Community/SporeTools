@@ -25,7 +25,7 @@ export async function getParentAssets(assetId: number) {
 
     const parentIds: number[] = [];
 
-    const parentId = assetLineage.parent.id;
+    const parentId = assetLineage?.parent?.id;
     if (parentId) {
         parentIds.push(parentId);
         parentIds.push(...await getParentAssets(parentId));

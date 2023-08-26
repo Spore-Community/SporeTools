@@ -17,7 +17,7 @@ export async function getParentAssets(assetId) {
     //const asset = await DwrApi.getAsset(assetId);
     const assetLineage = await DwrApi.getAssetLineage(assetId);
     const parentIds = [];
-    const parentId = assetLineage.parent.id;
+    const parentId = assetLineage?.parent?.id;
     if (parentId) {
         parentIds.push(parentId);
         parentIds.push(...await getParentAssets(parentId));
