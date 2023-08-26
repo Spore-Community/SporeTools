@@ -14,9 +14,10 @@ export async function getAdventureAssets(adventureAssetId) {
 }
 /** Returns a list of assets in the specified asset's lineage. The list will be sorted newest to oldest, and will not include the specified asset. */
 export async function getParentAssets(assetId) {
-    const asset = await DwrApi.getAsset(assetId);
+    //const asset = await DwrApi.getAsset(assetId);
+    const assetLineage = await DwrApi.getAssetLineage(assetId);
     const parentIds = [];
-    const parentId = asset?.parentId;
+    const parentId = assetLineage.parent.id;
     if (parentId) {
         parentIds.push(parentId);
         parentIds.push(...await getParentAssets(parentId));
