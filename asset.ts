@@ -106,7 +106,7 @@ async function updateServerData(assetId: number | undefined, analyzePng = true) 
         const parentIds = await getParentAssets(assetId);
         parentIds.reverse().forEach(parentId => {
             const pngUrl = SporeApi.getSmallPngUrl(parentId);
-            document.getElementById("ServerLineageData")!.innerHTML += `<div class="lineageAsset"><a href="?assetId=${parentId}"><img src="${pngUrl}" width="128" height="128"></a><pre>${parentId}</pre></div>`;
+            document.getElementById("ServerLineageData")!.innerHTML += `<div class="lineageAsset"><a href="?assetId=${parentId}"><img src="${pngUrl}" width="128" height="128"></a><p>${parentId}</p></div>`;
         });
 
         // Decode PNG data

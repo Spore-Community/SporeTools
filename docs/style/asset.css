@@ -85,17 +85,18 @@
     margin-top: 0;
 }
 
-#AssetDetails div {
+#AssetDetails > div {
     display: none;
 }
 
-#AssetDetails div:target {
+#AssetDetails > div:target {
     display: block;
 }
 
 #ServerLineageData {
-    display: grid;
+    display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .lineageAsset {
@@ -104,6 +105,9 @@
     background: var(--spore-cool-gradient);
 }
 
-.lineageAsset pre {
+.lineageAsset p {
+    background-color: var(--spore-mid-space);
+    margin: 0;
+    padding: 0.25em;
     text-align: center;
 }
