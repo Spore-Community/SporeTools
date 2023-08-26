@@ -19,31 +19,31 @@ interface ApiOptions {
     userAgent?: string
 }
 
-type AssetType = "CREATURE" | "BUILDING" | "VEHICLE" | "UFO" | "ADVENTURE";
+export type AssetType = "CREATURE" | "BUILDING" | "VEHICLE" | "UFO" | "ADVENTURE";
 
-type CreatureFunction = "CREATURE" | "TRIBE_CREATURE" | "CIV_CREATURE" | "SPACE_CREATURE" | "ADVENTURE_CREATURE";
-type BuildingFunction = "CITY_HALL" | "HOUSE" | "INDUSTRY" | "ENTERTAINMENT";
-type VehicleFunction = "MILITARY_LAND" | "MILITARY_WATER" | "MILITARY_AIR" | "ECONOMIC_LAND" | "ECONOMIC_WATER" | "ECONOMIC_AIR" | "CULTURAL_LAND" | "CULTURAL_WATER" | "CULTURAL_AIR" | "COLONY_LAND" | "COLONY_WATER" | "COLONY_AIR";
-type UfoFunction = "UFO";
-type AdventureFunction = "ADV_UNSET" | "ADV_TEMPLATE" | "ADV_ATTACK" | "ADV_DEFEND" | "ADV_SOCIALIZE" | "ADV_EXPLORE" | "ADV_QUEST" | "ADV_STORY" | "ADV_COLLECT" | "ADV_PUZZLE";
-type AssetFunction = CreatureFunction | BuildingFunction | VehicleFunction | UfoFunction | AdventureFunction;
+export type CreatureFunction = "CREATURE" | "TRIBE_CREATURE" | "CIV_CREATURE" | "SPACE_CREATURE" | "ADVENTURE_CREATURE";
+export type BuildingFunction = "CITY_HALL" | "HOUSE" | "INDUSTRY" | "ENTERTAINMENT";
+export type VehicleFunction = "MILITARY_LAND" | "MILITARY_WATER" | "MILITARY_AIR" | "ECONOMIC_LAND" | "ECONOMIC_WATER" | "ECONOMIC_AIR" | "CULTURAL_LAND" | "CULTURAL_WATER" | "CULTURAL_AIR" | "COLONY_LAND" | "COLONY_WATER" | "COLONY_AIR";
+export type UfoFunction = "UFO";
+export type AdventureFunction = "ADV_UNSET" | "ADV_TEMPLATE" | "ADV_ATTACK" | "ADV_DEFEND" | "ADV_SOCIALIZE" | "ADV_EXPLORE" | "ADV_QUEST" | "ADV_STORY" | "ADV_COLLECT" | "ADV_PUZZLE";
+export type AssetFunction = CreatureFunction | BuildingFunction | VehicleFunction | UfoFunction | AdventureFunction;
 
-type AssetView = "NEWEST" | "OLDEST" | "TOP_RATED" | "TOP_RATED_NEW" | "TOP_RATED_AUTHOR" | "FEATURED" | "FEATURED_ADMIN" | "MAXIS_MADE" | "CUTE_AND_CREEPY" | "RANDOM" | "THERESA_VISION" | "ALL";
+export type AssetView = "NEWEST" | "OLDEST" | "TOP_RATED" | "TOP_RATED_NEW" | "TOP_RATED_AUTHOR" | "FEATURED" | "FEATURED_ADMIN" | "MAXIS_MADE" | "CUTE_AND_CREEPY" | "RANDOM" | "THERESA_VISION" | "ALL";
 
-type Locale = "en_US" | string;
+export type Locale = "en_US" | string;
 
-type Products = "SPORE_CORE" | "CUTE_AND_CREEPY" | "INSECT_LIMBS" | "EXPANSION_PACK1" | "DR_PEPPER_PARTS";
+export type Products = "SPORE_CORE" | "CUTE_AND_CREEPY" | "INSECT_LIMBS" | "EXPANSION_PACK1" | "DR_PEPPER_PARTS";
 
-type AssetStatus = "CLASSIFIED" | "INVALID" | "PURGED" | "DELETED";
+export type AssetStatus = "CLASSIFIED" | "INVALID" | "PURGED" | "DELETED";
 
 /** Represents an item in the Spore Pollinator database. Includes users, assets, Sporecasts. */
-interface SporeItem {
+export interface SporeItem {
     /** The ID number of this item. This will normally be a 12-digit Spore server ID. */
     id: number
 }
 
 /** Represents a Spore user/player/persona. */
-interface User extends SporeItem {
+export interface User extends SporeItem {
     /** The number of creations that have been shared by this user. */
     assetCount: number,
     /** The relative URL of this user's avatar image. */
@@ -79,7 +79,7 @@ interface User extends SporeItem {
 }
 
 /** Represents a users public data, including their profile data, creations, achievements, buddies, Sporecasts, and adventure data. */
-interface MySporePublicData {
+export interface MySporePublicData {
     /** The three most-recent adventures shared by this user. */
     adventuresCreated: unknown[],
     /** An array containing a single adventure where this user is #1 on the leaderboard. */
@@ -112,7 +112,7 @@ interface MySporePublicData {
 }
 
 /** Represents a creation/asset. */
-interface Asset extends SporeItem {
+export interface Asset extends SporeItem {
     adventureStat: unknown | undefined,
     /** The subtype (function) of this creation. */
     assetFunction: AssetFunction,
@@ -161,7 +161,7 @@ interface Asset extends SporeItem {
 }
 
 /** This sporecast object is only used in `profileService.getMySporePublicData`. */
-interface Sporecast extends SporeItem {
+export interface Sporecast extends SporeItem {
     /** The user who created this Sporecast. */
     author: User,
     /** The date and time that the creations (entries) in this Sporecast were last updated. */
@@ -187,7 +187,7 @@ interface Sporecast extends SporeItem {
 }
 
 /** Represents info about a Sporecast or buddy, as returned by methods in `sporecastService`. */
-interface SporecastOrBuddyInfo extends SporeItem {
+export interface SporecastOrBuddyInfo extends SporeItem {
     /** Not always included, and null when it is, purpose unknown. */
     assetIds: unknown | undefined,
     /** Not always included, and null when it is, purpose unknown. */
@@ -215,7 +215,7 @@ interface SporecastOrBuddyInfo extends SporeItem {
     type: "THEME" | "BUDDY",
 }
 
-interface SporecastInfo extends SporecastOrBuddyInfo {
+export interface SporecastInfo extends SporecastOrBuddyInfo {
     /** The description of this Sporecast. May be undefined if a description is not set. */
     description: string,
     /** The date and time that this Sporecast was last updated. */
@@ -233,7 +233,7 @@ interface SporecastInfo extends SporecastOrBuddyInfo {
     type: "THEME"
 }
 
-interface BuddyInfo extends SporecastOrBuddyInfo {
+export interface BuddyInfo extends SporecastOrBuddyInfo {
     /** The user that is buddied. */
     author: User,
     /** The total number of creations shared by this buddy. */
@@ -255,7 +255,7 @@ interface BuddyInfo extends SporecastOrBuddyInfo {
 }
 
 /** Represents the lineage for a creation. */
-interface AssetAuthors {
+export interface AssetAuthors {
     /** The original creation in lineage (oldest parent). */
     original: Asset,
     /** The immediate parent creation in lineage. */
@@ -263,7 +263,7 @@ interface AssetAuthors {
 }
 
 /** Represents an uprate or downrate on an item. This object does not exist for unrated creations. */
-interface Rating {
+export interface Rating {
     /** The chosen rating. 1 for uprate, 0 for downrate. */
     rating: number,
     /** The ID of the creation that was rated. */
@@ -275,7 +275,7 @@ interface Rating {
 }
 
 /** Represents a comment on a creation. */
-interface Comment extends SporeItem {
+export interface Comment extends SporeItem {
     /** The asset that was commented on. */
     asset: Asset,
     /** The user that posted this comment. */
@@ -298,7 +298,7 @@ interface Comment extends SporeItem {
 }
 
 /** Used by `assetService.listAssets` and `assetService.countAssets` to query creations in the Spore Pollinator database. */
-interface AssetQuery {
+export interface AssetQuery {
     /** Restricts results to a specific user ID. */
     userId?: number,
     /** @deprecated Restricts results to a specific user name, however, appears to be ignored. */
@@ -321,7 +321,7 @@ interface AssetQuery {
 }
 
 /** Used by `sporecastService.listSporecastInfos`, `countSporecastInfo`, and `listSporecastInfosSubscribedToByUser` to query sporecasts in the Spore Pollinator database. */
-interface SporecastQuery {
+export interface SporecastQuery {
     /** Restricts results to a specific user ID. */
     userId?: number,
     /** The index to begin listing sporecasts from, used to paginate results. */
@@ -436,8 +436,6 @@ export default class SporeDwrApiClient {
 
         // Execute the HTTP request
         let response = await this.postHttp(path, body, contentType);
-        //// @ts-expect-error - TODO: remove this
-        //let response = await Deno.readTextFile("DWR_API_Response_Samples/assetService.countTotalAssets");
 
         // Make sure first three lines match expected format
         const DWR_EXPECTED_HEADER = "throw 'allowScriptTagRemoting is false.';\n//#DWR-INSERT\n//#DWR-REPLY\n";
@@ -819,9 +817,9 @@ function substituteVariables(holder: { [index: string]: any } | any[] | { refere
     return holder;
 }
 
-const sporeServer = new SporeDwrApiClient();
-const response = await sporeServer.execute("assetService", "fetchComments", 501065382447);
-console.log(JSON.stringify(response));
+//const sporeServer = new SporeDwrApiClient();
+//const response = await sporeServer.execute("assetService", "fetchComments", 501065382447);
+//console.log(JSON.stringify(response));
 
 /*// Get all of a user's creations
 let userCreations = await sporeServer.listAssets({ userId: 500203290213 });
