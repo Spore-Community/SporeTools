@@ -1,5 +1,5 @@
-import * as WebApi from "./SporeWebApiClient";
-import DwrClient from "./SporeDwrApiClient";
+import * as WebApi from "./SporeWebApiClient.js";
+import DwrClient from "./SporeDwrApiClient.js";
 const DwrApi = new DwrClient();
 /** Returns a list of asset IDs that are used in the specified adventure. */
 export async function getAdventureAssets(adventureAssetId) {
