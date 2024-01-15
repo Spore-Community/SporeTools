@@ -188,8 +188,8 @@ export interface Sporecast extends SporeItem {
 
 /** Represents info about a Sporecast or buddy, as returned by methods in `sporecastService`. */
 export interface SporecastOrBuddyInfo extends SporeItem {
-    /** Not always included, and null when it is, purpose unknown. */
-    assetIds: unknown | undefined,
+    /** If `fetchAssetIdCount` was specified, this will contain up to the specified number of asset IDs for creations in this Sporecast. */
+    assetIds: number[] | undefined,
     /** Not always included, and null when it is, purpose unknown. */
     assets: unknown | undefined,
     /** The user who created this Sporecast. */
@@ -326,14 +326,18 @@ export interface SporecastQuery {
     userId?: number,
     /** The index to begin listing sporecasts from, used to paginate results. */
     index?: number,
-    /** The maximum number of sporecasts to retrieve. */
+    /** The maximum number of sporecasts to retrieve. While there is no actual limit, values over 1000 are slow and unreliable. Do not abuse. */
     count?: number,
     /** Whether to include empty sporecasts. */
     showEmpty?: boolean,
     /** Always "THEME". */
     type?: "THEME",
+    /** How the sporecasts should be sorted. When this is specified, you must also set `fetchAssetIdCount` to at least 1, for unknown reasons. */
+    sort?: "MOST_RECENT" | "RATING",
     /** Restricts results to a specific sporecast ID. When specified, most other options are ignored, and the results will contain one or zero sporecasts. */
     sporecastId?: number,
+    /** If specified, up to this many asset IDs are included in the response. No other data about the assets will be returned. */
+    fetchAssetIdCount?: number,
     [key: string]: string | number | boolean | undefined
 }
 
@@ -477,11 +481,14 @@ export default class SporeDwrApiClient {
     /** Counts the total number of creations of each type. */
     async countAvailableAssets() {
         const all = await this.countAssets({ view: "ALL" });
+
         const creatures = await this.countAssets({ view: "ALL", type: "CREATURE" });
         const buildings = await this.countAssets({ view: "ALL", type: "BUILDING" });
         const vehicles = await this.countAssets({ view: "ALL", type: "VEHICLE" });
         const ufos = await this.countAssets({ view: "ALL", type: "UFO" });
         const adventures = await this.countAssets({ view: "ALL", type: "ADVENTURE" });
+
+        const sporecasts = await this.countSporecasts({ type: "THEME" });
 
         return {
             all: all,
@@ -489,7 +496,8 @@ export default class SporeDwrApiClient {
             buildings: buildings,
             vehicles: vehicles,
             ufos: ufos,
-            adventures: adventures
+            adventures: adventures,
+            sporecasts: sporecasts
         };
     }
 
@@ -847,3 +855,8 @@ creationsToDownload.forEach(creation => {
     console.log(`[${creation.id}] ${creation.name} by ${creation.author.name}`);
 });
 console.log("Found " + creationsToDownload.length + " creations to download");*/
+
+/*const sporecasts = await sporeServer.listSporecasts({ type: "THEME", fetchAssetIdCount: 1, index: 0, count: 1000, sort: "RATING" });
+sporecasts.forEach(s => {
+    console.log(s.id + " | " + s.title + " | " + s.author.name + " | " + s.count + " creations");
+});*/
