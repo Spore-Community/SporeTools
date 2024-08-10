@@ -34,7 +34,7 @@ export type Locale = "en_US" | string;
 
 export type Products = "SPORE_CORE" | "CUTE_AND_CREEPY" | "INSECT_LIMBS" | "EXPANSION_PACK1" | "DR_PEPPER_PARTS";
 
-export type AssetStatus = "CLASSIFIED" | "INVALID" | "PURGED" | "DELETED" | "MAXIS" | "BANNED";
+export type AssetStatus = "CLASSIFIED" | "INVALID" | "PURGED" | "DELETED" | "MAXIS" | "BANNED" | "BOUND" | "RESERVED";
 
 /** Represents an item in the Spore Pollinator database. Includes users, assets, Sporecasts. */
 export interface SporeItem {
