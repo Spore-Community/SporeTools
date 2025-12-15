@@ -143,14 +143,10 @@ export default class SporePng {
         // Convert to string
         let data = new TextDecoder().decode(decompressedData);
         this.rawData = data;
-        // Split into metadata header and XML model
-        let xmlBeginIndex = data.indexOf("<?xml");
-        this.metadataHeader = data.substring(0, xmlBeginIndex);
-        this.xmlModel = data.substring(xmlBeginIndex);
         // Parse the metadata header
         let currentPosition = 0;
         const read = (length) => {
-            let data = this.metadataHeader.substring(currentPosition, currentPosition + length);
+            let data = this.rawData.substring(currentPosition, currentPosition + length);
             // If character is non-ASCII, Spore counts it as two, so need to subtract
             for (let char of data) {
                 if (char.charCodeAt(0) > 127) {
@@ -161,7 +157,7 @@ export default class SporePng {
                     }
                 }
             }
-            data = this.metadataHeader.substring(currentPosition, currentPosition + length);
+            data = this.rawData.substring(currentPosition, currentPosition + length);
             currentPosition += length;
             return data;
         };
@@ -209,5 +205,8 @@ export default class SporePng {
         for (let i = 0; i < traitCount; i++) {
             this.consequenceTraits.push(read(8));
         }
+        // Remaining data is the model data
+        this.metadataHeader = this.rawData.substring(0, currentPosition);
+        this.xmlModel = this.rawData.substring(currentPosition);
     }
 }
