@@ -126,13 +126,15 @@ export default class SporeDwrApiClient {
         const vehicles = await this.countAssets({ view: "ALL", type: "VEHICLE" });
         const ufos = await this.countAssets({ view: "ALL", type: "UFO" });
         const adventures = await this.countAssets({ view: "ALL", type: "ADVENTURE" });
+        const sporecasts = await this.countSporecasts({ type: "THEME" });
         return {
             all: all,
             creatures: creatures,
             buildings: buildings,
             vehicles: vehicles,
             ufos: ufos,
-            adventures: adventures
+            adventures: adventures,
+            sporecasts: sporecasts
         };
     }
     /** Returns the total number of creations ever shared on Spore.com. This count includes creations that are not available. */
@@ -437,4 +439,8 @@ userCreations.forEach(async asset => {
 creationsToDownload.forEach(creation => {
     console.log(`[${creation.id}] ${creation.name} by ${creation.author.name}`);
 });
-console.log("Found " + creationsToDownload.length + " creations to download");*/ 
+console.log("Found " + creationsToDownload.length + " creations to download");*/
+/*const sporecasts = await sporeServer.listSporecasts({ type: "THEME", fetchAssetIdCount: 1, index: 0, count: 1000, sort: "RATING" });
+sporecasts.forEach(s => {
+    console.log(s.id + " | " + s.title + " | " + s.author.name + " | " + s.count + " creations");
+});*/

@@ -165,7 +165,7 @@ export default class SporePng {
             console.error(`The Spore PNG is invalid. Invalid metadata header. Note that adventures are not currently supported.`);
         }
         let headerVersion = parseInt(read(4));
-        if (headerVersion !== 5 && headerVersion !== 6) {
+        if (headerVersion !== 4 && headerVersion !== 5 && headerVersion !== 6) {
             console.error(`The Spore PNG is invalid. Invalid metadata version: ${headerVersion}`);
         }
         // Resource key and machine ID
@@ -200,10 +200,12 @@ export default class SporePng {
         let tagsLength = parseInt(read(2), 16);
         this.tags = read(tagsLength);
         // Consequence traits
-        let traitCount = parseInt(read(2), 16);
         this.consequenceTraits = [];
-        for (let i = 0; i < traitCount; i++) {
-            this.consequenceTraits.push(read(8));
+        if (headerVersion >= 5) {
+            let traitCount = parseInt(read(2), 16);
+            for (let i = 0; i < traitCount; i++) {
+                this.consequenceTraits.push(read(8));
+            }
         }
         // Remaining data is the model data
         this.metadataHeader = this.rawData.substring(0, currentPosition);
