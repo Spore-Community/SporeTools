@@ -73,11 +73,11 @@ export default class SporePng {
         /** The group ID (folder) that contains this asset, corresponding to its type. */
         group: string,
         /** The ID (filename) of this asset. */
-        instance: string
+        instance: string | undefined
     };
 
     /** Constant for user/machine where the asset was made? Purpose unknown. */
-    readonly machineId: string;
+    readonly machineId: string | undefined;
 
     /** The unique ID of this asset on the server. If undefined, this asset was not shared. */
     readonly assetId: number | undefined;
@@ -214,22 +214,31 @@ export default class SporePng {
             console.error(`The Spore PNG is invalid. Invalid metadata header. Note that adventures are not currently supported.`)
         }
         let headerVersion = parseInt(read(4));
-        if (headerVersion !== 4 && headerVersion !== 5 && headerVersion !== 6) {
+        if (headerVersion < 3 || headerVersion > 6) {
             console.error(`The Spore PNG is invalid. Invalid metadata version: ${headerVersion}`)
         }
 
         // Resource key and machine ID
-        this.resourceKey = {
-            type: read(8),
-            group: read(8),
-            instance: read(8)
-        };
-        this.machineId = read(8);
+        if (headerVersion >= 4) {
+            this.resourceKey = {
+                type: read(8),
+                group: read(8),
+                instance: read(8)
+            };
+            this.machineId = read(8);
+        } else {
+            // Version 3 doesn't have an instance ID for some reason?
+            this.resourceKey = {
+                type: read(8),
+                group: read(8),
+                instance: undefined
+            };
+        }
 
         // Asset IDs (cap at 502000000000 since JS doesn't parse negatives)
         this.assetId = parseInt(read(16), 16);
         if (this.assetId > 502000000000) this.assetId = undefined;
-        if (headerVersion === 6) {
+        if (headerVersion >= 6) {
             this.parentAssetId = parseInt(read(16), 16);
             if (this.parentAssetId > 502000000000) this.parentAssetId = undefined;
         }
