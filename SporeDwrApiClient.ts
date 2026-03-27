@@ -187,7 +187,7 @@ export interface Sporecast extends SporeItem {
 }
 
 /** Represents info about a Sporecast or buddy, as returned by methods in `sporecastService`. */
-export interface SporecastOrBuddyInfo extends SporeItem {
+export interface SubscriptionInfo extends SporeItem {
     /** If `fetchAssetIdCount` was specified, this will contain up to the specified number of asset IDs for creations in this Sporecast. */
     assetIds: number[] | undefined,
     /** Not always included, and null when it is, purpose unknown. */
@@ -215,7 +215,7 @@ export interface SporecastOrBuddyInfo extends SporeItem {
     type: "THEME" | "BUDDY",
 }
 
-export interface SporecastInfo extends SporecastOrBuddyInfo {
+export interface SporecastInfo extends SubscriptionInfo {
     /** The description of this Sporecast. May be undefined if a description is not set. */
     description: string,
     /** The date and time that this Sporecast was last updated. */
@@ -233,7 +233,7 @@ export interface SporecastInfo extends SporecastOrBuddyInfo {
     type: "THEME"
 }
 
-export interface BuddyInfo extends SporecastOrBuddyInfo {
+export interface BuddyInfo extends SubscriptionInfo {
     /** The user that is buddied. */
     author: User,
     /** The total number of creations shared by this buddy. */
@@ -547,7 +547,7 @@ export default class SporeDwrApiClient {
 
     /** Gets the Sporecasts and buddies that the specified user is subscribed to. */
     async listSporecastsSubscribedToByUser(userId: number) {
-        return await this.execute("sporecastService", "listSporecastInfosSubscribedToByUser", userId) as SporecastOrBuddyInfo[];
+        return await this.execute("sporecastService", "listSporecastInfosSubscribedToByUser", userId) as SubscriptionInfo[];
     }
 
     /** Gets the assets in the specified Sporecast. */
