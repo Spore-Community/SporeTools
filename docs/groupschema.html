@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://spore-web-api.kade.workers.dev">
+    <title>Spore Tools</title>
+    <link rel='stylesheet' href='style/spore.css'>
+    <link rel='stylesheet' href='style/style.css'>
+    <script type="module" src='js/groupschema.js'></script>
+</head>
+
+<body>
+    <main>
+        <h1>Spore Group Schema</h1>
+        <fieldset id="ID2Name">
+            <legend>Enter a group ID to convert:</legend>
+
+            <input id="ID" placeholder="Group ID" autofocus maxlength="8">
+            <input id="Name" placeholder="Name" readonly>
+
+            <div>
+                <input id="HideDefaultKind" type="checkbox" checked>
+                <label for="HideDefaultKind">Hide the default kind</label>
+                <br>
+                <input id="HideDefaultVariant" type="checkbox" checked>
+                <label for="HideDefaultVariant">Hide the default variant</label>
+            </div>
+        </fieldset>
+        <fieldset id="Combine">
+            <legend>Combine a group name from schema elements:</legend>
+
+            <div>
+                <select id="Entity"></select>
+                <span>+</span>
+                <select id="Variant" disabled></select>
+                <span>_</span>
+                <select id="Kind"></select>
+                <span>_</span>
+                <input id="Number" type="number" min="0" max="255" step="1">
+            </div>
+
+            <input id="CombinedID" placeholder="Group ID" readonly>
+        </fieldset>
+    </main>
+    <footer>
+        <p>Not associated with or endorsed by Electronic Arts or Maxis.</p>
+        <p>Created by Kade. Contact via <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/66jVk3X">Discord</a> or <a href="mailto:kade@sporecommunity.com">email</a>. Source code on <a target="_blank" rel="noopener noreferrer" href="https://github.com/Spore-Community/SporeTools">GitHub</a>.</p>
+    </footer>
+
+</body>
+
+</html>
