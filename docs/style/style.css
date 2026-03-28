@@ -28,7 +28,7 @@ td, th {
     padding: 4px;
 }
 
-input {
+input, select {
     background: var(--spore-cool);
     font-size: 16px;
     padding: 5px 13px;
@@ -41,7 +41,7 @@ input:focus {
     border-color: var(--spore-light-space);
 }
 
-input:invalid:focus {
+input:invalid:focus, select:disabled {
     border-color: #A42433;
 }
 
