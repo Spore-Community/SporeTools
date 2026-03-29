@@ -22,6 +22,9 @@ function updateNameFromID() {
 }
 
 ID2NAME_ID_INPUT.addEventListener("input", () => {
+    if (ID2NAME_ID_INPUT.value.startsWith("0x")) {
+        ID2NAME_ID_INPUT.value = ID2NAME_ID_INPUT.value.replace("0x", "");
+    }
     ID2NAME_ID_INPUT.value = ID2NAME_ID_INPUT.value.replace(/[^0-9a-fA-F]/g, "");
     updateNameFromID();
 });
